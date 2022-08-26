@@ -3,7 +3,9 @@ version: '3'
 services:
   stablediffusion:
     container_name: stablediffusion
-    image: sharrnah/stable-diffusion-guitard
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       #- 7860:7860
       - 7860:8080

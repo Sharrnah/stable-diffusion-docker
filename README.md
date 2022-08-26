@@ -47,17 +47,32 @@ localhostForwarding=true
     Needs kernel version of 5.10.43.3 or higher.
 
 ## Installation
-- build image with
-  > `docker compose up -d --build`
 
-- See current logs with
+### With Docker
+- Build image yourself with:
+  > `docker build -t stable-diffusion-guitard .`
+
+- Run prebuild image with:
+  ```console
+  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/ -v ./models/SDv1.4.ckpt:/models/SDv1.4.ckpt:ro -v ./models/GFPGANv1.3.pth:/models/GFPGANv1.3.pth:ro -v ./outputs/:/outputs/ sharrnah/stable-diffusion-guitard
+  ```
+  _(replace "`sharrnah/stable-diffusion-guitard`" image name with "`stable-diffusion-guitard`" to run self-build image)_
+
+### With Docker Compose _(recommended)_
+- build image yourself and start it with:
+  > `docker compose -f docker-compose.build.yaml up -d --build`
+
+- start prebuild image with:
+  > `docker compose up -d`
+
+- See current logs with:
   > `docker compose logs stablediffusion -f`
 
-- You can exec into the container with
+- You can exec into the container with:
   > `docker compose exec stablediffusion bash`
 
 ## Usage
-- after the webgui started successful you should see a log output telling
+- after the webgui started successfully you should see a log output telling
   ```
   Running on local URL:  http://127.0.0.1:7860/
   ```
