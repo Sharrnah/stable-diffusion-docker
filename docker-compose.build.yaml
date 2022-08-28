@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - RUN_MODE
     ports:
       - 7860:8080
     stdin_open: true
@@ -17,8 +19,10 @@ services:
           devices:
             - capabilities: [ gpu ]
     volumes:
-      - ./.cache/:/.cache/
-      # mounting model files as read-only
-      - ./models/:/models/:ro
+      # mount cache dirs
+      - ./.cache/app:/root/.cache
+      - ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/
+      # mounting model files
+      - ./models/:/models/
       # generated outputs mount
       - ./outputs/:/outputs/

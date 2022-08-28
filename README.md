@@ -1,35 +1,5 @@
 # Docker image for Stable Diffusion
 
-## Preparation
-
-### Stable Diffusion Model Download
-- Download the v1.4 Stable Diffusion model from one of the following sources:
-  - Web:
-    
-    https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl
-  - Torrent Magnet:
-    
-    magnet:?xt=urn:btih:3a4a612d75ed088ea542acac52f9f45987488d1c&dn=sd-v1-4.ckpt&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337
-  - Hugging face:
-    
-    https://huggingface.co/CompVis/stable-diffusion-v1-4
-
-- Place the downloaded model file into the `models/` directory and name it `SDv1.4.ckpt` (**Case-Sensitive**)
-
-### GFPGAN Model Download (Face Correction)
-- Download the GFPGAN v1.3.0 model from here:
-  - https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
-
-- Place the downloaded model file into the `models/` directory and name it `GFPGANv1.3.pth` (**Case-Sensitive**)
-
-### RealESRGAN Model Download (Upscaling)
-- Download the RealESRGAN x4plus model from here:
-  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-- Download the RealESRGAN x4plus anime model from here:
-  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
-
-- Place the downloaded model files into the `models/` directory and name them `RealESRGAN_x4plus.pth` and `RealESRGAN_x4plus_anime_6B.pth` (**Case-Sensitive**)
-
 ## Setup for Windows
 
 - For Windows using WSL2, write a .wslconfig File in your user path with following content:
@@ -62,7 +32,7 @@ localhostForwarding=true
 
 - Run prebuild image with:
   ```console
-  docker run -d --gpus all -p 7860:8080 -v ./.cache/:/.cache/ -v ./models/:/models/:ro -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
+  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/ -v ./models/:/models/:ro -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
   ```
   _(replace "`sharrnah/stable-diffusion-guitard`" image name with "`stable-diffusion-guitard`" to run self-build image)_
 
@@ -83,18 +53,21 @@ localhostForwarding=true
 
 ## Options
 - You can set the environment variable "RUN_MODE" to one of these setting:
-  - "`4G`" For reduced Memory mode (sacrificing speed)
+  - "`OPTIMIZED`" For reduced Memory mode (sacrificing speed)
+  - "`OPTIMIZED-TURBO`" For lesser reduced Memory mode (sacrificing less speed)
   - "`GTX16`" When generated images are green (known problem on GTX 16xx GPUs)
+  - "`GTX16-TURBO`" When generated images are green (known problem on GTX 16xx GPUs) [using OPTIMIZED-TURBO]
+  - "`FULL-PRECISION`" use full precision
 
 For that you can create a `.env` file and set the content to
 ```env
-RUN_MODE=4G
+RUN_MODE=OPTIMIZED
 ```
 or
 ```
 RUN_MODE=GTX16
 ```
-(See `example.env` file.)
+(See `example.env` file including all values)
 
 ## Usage
 - after the webgui started successfully you should see a log output telling
@@ -108,6 +81,44 @@ RUN_MODE=GTX16
 - Open http://127.0.0.1:7860/ in your Browser to use it.
 
 - All generated images are saved into the `./outputs/` directory.
+
+
+## Model Sources
+
+> **Models should be downloaded automatically on first run now!**
+
+### Stable Diffusion Model Download
+
+- Download the v1.4 Stable Diffusion model from one of the following sources:
+  - Web:
+    
+    - https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl
+    
+    or
+
+    - https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
+  - Torrent Magnet:
+    
+    - > `magnet:?xt=urn:btih:3a4a612d75ed088ea542acac52f9f45987488d1c&dn=sd-v1-4.ckpt&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337`
+  - Hugging face:
+    
+    - https://huggingface.co/CompVis/stable-diffusion-v1-4
+
+- Place the downloaded model file into the `models/` directory and name it `SDv1.4.ckpt` (**Case-Sensitive**)
+
+### GFPGAN Model Download (Face Correction)
+- Download the GFPGAN v1.3.0 model from here:
+  - https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
+
+- Place the downloaded model file into the `models/` directory and name it `GFPGANv1.3.pth` (**Case-Sensitive**)
+
+### RealESRGAN Model Download (Upscaling)
+- Download the RealESRGAN x4plus model from here:
+  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+- Download the RealESRGAN x4plus anime model from here:
+  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+
+- Place the downloaded model files into the `models/` directory and name them `RealESRGAN_x4plus.pth` and `RealESRGAN_x4plus_anime_6B.pth` (**Case-Sensitive**)
 
 
 ### _Sources:_

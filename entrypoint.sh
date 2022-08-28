@@ -1,10 +1,54 @@
 #!/bin/bash
+
+MODEL_FILES=(
+    'SDv1.4.ckpt https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media fe4efff1e174c627256e44ec2991ba279b3816e364b49f9be2abc0b3ff3f8556'
+    'GFPGANv1.3.pth https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth c953a88f2727c85c3d9ae72e2bd4846bbaf59fe6972ad94130e23e7017524a70'
+    'RealESRGAN_x4plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth 4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1'
+    'RealESRGAN_x4plus_anime_6B.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da'
+)
+
+validateDownloadModel() {
+    local file=$1
+    local url=$2
+    local hash=$3
+
+    echo "checking if ${file} has hash ${hash}..."
+    sha256sum --check --status <<< "${hash} /models/${file}"
+    if [[ $? == "1" ]]; then
+        echo "Downloading: ${url} please wait..."
+        mkdir -p /models/
+        wget --output-document=/models/${file} --no-verbose --show-progress --progress=dot:giga ${url}
+        echo "saved ${file}"
+    else
+        echo -e "${file} is valid!\n"
+    fi
+}
+
+# Validate model files
+echo "Validating model files..."
+for models in "${MODEL_FILES[@]}"; do
+    model=($models)
+    validateDownloadModel ${model[0]} ${model[1]} ${model[2]}
+done
+
 socat TCP4-LISTEN:8080,fork TCP4:127.0.0.1:7860 &
 
-if [ "${RUN_MODE}" = "4G" ] ; then
+if [ "${RUN_MODE}" = "OPTIMIZED" ] ; then
+  echo "Running OPTIMIZED mode"
   conda run --no-capture-output -n ldm python scripts/webui.py --gfpgan-cpu --esrgan-cpu --optimized
-elif ["${RUN_MODE}" = "GTX16"]; then
+elif [ "${RUN_MODE}" = "OPTIMIZED-TURBO" ] ; then
+  echo "Running OPTIMIZED-TURBO mode"
+  conda run --no-capture-output -n ldm python scripts/webui.py --gfpgan-cpu --esrgan-cpu --optimized-turbo
+elif [ "${RUN_MODE}" = "GTX16" ] ; then
+  echo "Running GTX16 mode"
   conda run --no-capture-output -n ldm python scripts/webui.py --precision full --no-half --gfpgan-cpu --esrgan-cpu --optimized
+elif [ "${RUN_MODE}" = "GTX16-TURBO" ] ; then
+  echo "Running GTX16-TURBO mode"
+  conda run --no-capture-output -n ldm python scripts/webui.py --precision full --no-half --gfpgan-cpu --esrgan-cpu --optimized-turbo
+elif [ "${RUN_MODE}" = "FULL-PRECISION" ] ; then
+  echo "Running FULL-PRECISION mode"
+  conda run --no-capture-output -n ldm python scripts/webui.py --precision=full --no-half
 else
+  echo "Running default mode"
   conda run --no-capture-output -n ldm python scripts/webui.py
 fi
