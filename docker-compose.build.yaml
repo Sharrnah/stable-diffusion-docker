@@ -7,21 +7,18 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      #- 7860:7860
       - 7860:8080
     stdin_open: true
     tty: true
+    restart: on-failure
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [ gpu ]
     volumes:
-      #- app-cache:/root/.cache
-      - ./.cache/app:/root/.cache
-      - ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/
+      - ./.cache/:/.cache/
       # mounting model files as read-only
-      - ./models/SDv1.4.ckpt:/models/SDv1.4.ckpt:ro
-      - ./models/GFPGANv1.3.pth:/models/GFPGANv1.3.pth:ro
+      - ./models/:/models/:ro
       # generated outputs mount
       - ./outputs/:/outputs/

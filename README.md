@@ -16,11 +16,19 @@
 
 - Place the downloaded model file into the `models/` directory and name it `SDv1.4.ckpt` (**Case-Sensitive**)
 
-### GFPGAN Model Download
+### GFPGAN Model Download (Face Correction)
 - Download the GFPGAN v1.3.0 model from here:
   - https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
 
 - Place the downloaded model file into the `models/` directory and name it `GFPGANv1.3.pth` (**Case-Sensitive**)
+
+### RealESRGAN Model Download (Upscaling)
+- Download the RealESRGAN x4plus model from here:
+  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+- Download the RealESRGAN x4plus anime model from here:
+  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+
+- Place the downloaded model files into the `models/` directory and name them `RealESRGAN_x4plus.pth` and `RealESRGAN_x4plus_anime_6B.pth` (**Case-Sensitive**)
 
 ## Setup for Windows
 
@@ -54,9 +62,11 @@ localhostForwarding=true
 
 - Run prebuild image with:
   ```console
-  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/ -v ./models/SDv1.4.ckpt:/models/SDv1.4.ckpt:ro -v ./models/GFPGANv1.3.pth:/models/GFPGANv1.3.pth:ro -v ./outputs/:/outputs/ sharrnah/stable-diffusion-guitard
+  docker run -d --gpus all -p 7860:8080 -v ./.cache/:/.cache/ -v ./models/:/models/:ro -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
   ```
   _(replace "`sharrnah/stable-diffusion-guitard`" image name with "`stable-diffusion-guitard`" to run self-build image)_
+
+  change "RUN_MODE" depending on your machine. (see [Options](#options) for more info)
 
 ### With Docker Compose _(recommended)_
 - build image yourself and start it with:
@@ -70,6 +80,21 @@ localhostForwarding=true
 
 - You can exec into the container with:
   > `docker compose exec stablediffusion bash`
+
+## Options
+- You can set the environment variable "RUN_MODE" to one of these setting:
+  - "`4G`" For reduced Memory mode (sacrificing speed)
+  - "`GTX16`" When generated images are green (known problem on GTX 16xx GPUs)
+
+For that you can create a `.env` file and set the content to
+```env
+RUN_MODE=4G
+```
+or
+```
+RUN_MODE=GTX16
+```
+(See `example.env` file.)
 
 ## Usage
 - after the webgui started successfully you should see a log output telling

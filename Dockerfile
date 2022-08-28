@@ -1,4 +1,3 @@
-# Source from https://rentry.org/kretard
 FROM nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04
 
 # COPIED FROM https://github.com/ContinuumIO/docker-images/blob/master/miniconda3/debian/Dockerfile
@@ -73,11 +72,17 @@ RUN echo "Downloading Arial Font for image matrix" && wget -O ./scripts/arial.tt
 
 RUN echo "Creating python environment" && conda env create -f environment.yaml
 
+# link to Face Correction Model FPGGANv1.3
 RUN ln -s /models/GFPGANv1.3.pth /app/src/gfpgan/experiments/pretrained_models/GFPGANv1.3.pth
+
+# link to Upscaling Model RealESRGAN x4plus
+RUN ln -s /models/RealESRGAN_x4plus.pth /app/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth
+RUN ln -s /models/RealESRGAN_x4plus_anime_6B.pth /app/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus_anime_6B.pth
 
 EXPOSE 7860
 
-COPY --chmod=0755 entrypoint.sh /app/
+COPY entrypoint.sh /app/
+RUN chmod 0755 /app/entrypoint.sh
 
 # fix arial.ttf loading in webui script
 RUN sed -i -- 's/arial\.ttf/\/app\/scripts\/arial\.ttf/g' ./scripts/webui.py
@@ -86,5 +91,12 @@ RUN sed -i -- 's/\\u0336//g' ./scripts/webui.py
 
 # symlink to mount outputs to host
 RUN mkdir -p /outputs/ && ln -s /outputs/ /app/outputs
+
+# symlink to mount caches
+RUN mkdir -p /.cache/app/ && ln -s /.cache/app /root/.cache && \
+    mkdir -p /.cache/facexlib/ && ln -s /.cache/facexlib /opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/
+
+# Set RUN_MODE to "4G" to use reduced memory intensive mode. (sacrificing speed), set to "GTX16" to fix solid green square issue (known problem on GTX 16xx GPUs)
+ENV RUN_MODE=false
 
 CMD /bin/bash -C entrypoint.sh
