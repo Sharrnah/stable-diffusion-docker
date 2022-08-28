@@ -39,7 +39,11 @@ localhostForwarding=true
   change "RUN_MODE" depending on your machine. (see [Options](#options) for more info)
 
 ### With Docker Compose _(recommended)_
-- build image yourself and start it with:
+- Download / Clone this repo.
+  
+  _(Or just get the docker-compose.yaml file if you want to use the prebuild image and skip "build image yourself" step.)_
+
+- build image yourself and start it with _(only if you want to build image yourself)_:
   > `docker compose -f docker-compose.build.yaml up -d --build`
 
 - start prebuild image with:
@@ -67,7 +71,7 @@ or
 ```
 RUN_MODE=GTX16
 ```
-(See `example.env` file including all values)
+(See `example.env` file including all possible values)
 
 ## Usage
 - after the webgui started successfully you should see a log output telling
