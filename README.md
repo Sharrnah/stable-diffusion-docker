@@ -41,12 +41,13 @@ localhostForwarding=true
 ### With Docker Compose _(recommended)_
 - Download / Clone this repo.
   
-  _(Or just get the docker-compose.yaml file if you want to use the prebuild image and skip "build image yourself" step.)_
+  _(Or just get the docker-compose.yaml file if you want to use the prebuild image and ignore "build image yourself" step.)_
 
-- build image yourself and start it with _(only if you want to build image yourself)_:
+- Start docker-compose project.
+  - building image yourself:
   > `docker compose -f docker-compose.build.yaml up -d --build`
 
-- start prebuild image with:
+  - start prebuild image with:
   > `docker compose up -d`
 
 - See current logs with:
