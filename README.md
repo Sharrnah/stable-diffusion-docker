@@ -32,7 +32,7 @@ localhostForwarding=true
 
 - Run prebuild image with:
   ```console
-  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/ -v ./models/:/models/:ro -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
+  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/ -v ./models/:/models/ -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
   ```
   _(replace "`sharrnah/stable-diffusion-guitard`" image name with "`stable-diffusion-guitard`" to run self-build image)_
 
