@@ -63,6 +63,9 @@ localhostForwarding=true
   - "`GTX16`" When generated images are green (known problem on GTX 16xx GPUs)
   - "`GTX16-TURBO`" When generated images are green (known problem on GTX 16xx GPUs) [using OPTIMIZED-TURBO]
   - "`FULL-PRECISION`" use full precision
+- Set the environment variable "WEBUI_RELAUNCH" to
+  - "`true`" (default) For automatic restarting of the WebUI
+  - "`false`" Disables automatic restarting of the WebUI
 
 For that you can create a `.env` file and set the content to
 ```env

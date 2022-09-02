@@ -33,22 +33,48 @@ done
 
 socat TCP4-LISTEN:8080,fork TCP4:127.0.0.1:7860 &
 
+RUN_ARGS=""
+
 if [ "${RUN_MODE}" = "OPTIMIZED" ] ; then
   echo "Running OPTIMIZED mode"
-  conda run --no-capture-output -n ldm python scripts/webui.py --gfpgan-cpu --esrgan-cpu --optimized
+  RUN_ARGS="--gfpgan-cpu --esrgan-cpu --optimized"
 elif [ "${RUN_MODE}" = "OPTIMIZED-TURBO" ] ; then
   echo "Running OPTIMIZED-TURBO mode"
-  conda run --no-capture-output -n ldm python scripts/webui.py --gfpgan-cpu --esrgan-cpu --optimized-turbo
+  RUN_ARGS="--gfpgan-cpu --esrgan-cpu --optimized-turbo"
 elif [ "${RUN_MODE}" = "GTX16" ] ; then
   echo "Running GTX16 mode"
-  conda run --no-capture-output -n ldm python scripts/webui.py --precision full --no-half --gfpgan-cpu --esrgan-cpu --optimized
+  RUN_ARGS="--precision full --no-half --gfpgan-cpu --esrgan-cpu --optimized"
 elif [ "${RUN_MODE}" = "GTX16-TURBO" ] ; then
   echo "Running GTX16-TURBO mode"
-  conda run --no-capture-output -n ldm python scripts/webui.py --precision full --no-half --gfpgan-cpu --esrgan-cpu --optimized-turbo
+  RUN_ARGS="--precision full --no-half --gfpgan-cpu --esrgan-cpu --optimized-turbo"
 elif [ "${RUN_MODE}" = "FULL-PRECISION" ] ; then
   echo "Running FULL-PRECISION mode"
-  conda run --no-capture-output -n ldm python scripts/webui.py --precision=full --no-half
+  RUN_ARGS="--precision full --precision=full --no-half"
 else
   echo "Running default mode"
-  conda run --no-capture-output -n ldm python scripts/webui.py
+fi
+
+
+if [[ -z $RUN_ARGS ]]; then
+    launch_message="entrypoint.sh: Launching..."
+else
+    launch_message="entrypoint.sh: Launching with arguments ${RUN_ARGS}"
+fi
+# handle automatic relaunching
+if [[ -z $WEBUI_RELAUNCH || $WEBUI_RELAUNCH == "true" ]]; then
+    n=0
+    while true; do
+
+        echo $launch_message
+        if (( $n > 0 )); then
+            echo "Relaunch count: ${n}"
+        fi
+        conda run --no-capture-output -n ldm python -u scripts/webui.py $RUN_ARGS
+        echo "entrypoint.sh: Process is ending. Relaunching in 0.5s..."
+        ((n++))
+        sleep 0.5
+    done
+else
+    echo $launch_message
+    conda run --no-capture-output -n ldm python -u scripts/webui.py $RUN_ARGS
 fi

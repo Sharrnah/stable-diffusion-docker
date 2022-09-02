@@ -6,6 +6,7 @@ services:
     image: sharrnah/stable-diffusion-guitard
     environment:
       - RUN_MODE
+      - WEBUI_RELAUNCH=true
     ports:
       - 7860:8080
     stdin_open: true
