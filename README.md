@@ -6,8 +6,8 @@
 
 ```ini
 [wsl2]
-memory=16GB # Limits VM memory in WSL 2 to X GB
-processors=4 # Makes the WSL 2 VM use X virtual processors
+memory=12GB # Limits VM memory in WSL 2 to X GB
+processors=3 # Makes the WSL 2 VM use X virtual processors
 localhostForwarding=true
 ```
 - You can play with the values if your PC can't handle it.
@@ -32,7 +32,7 @@ localhostForwarding=true
 
 - Run prebuild image with:
   ```console
-  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/ -v ./models/:/models/ -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
+  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/app/src/facexlib/facexlib/weights/ -v ./models/:/models/ -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
   ```
   _(replace "`sharrnah/stable-diffusion-guitard`" image name with "`stable-diffusion-guitard`" to run self-build image)_
 
@@ -90,6 +90,8 @@ RUN_MODE=GTX16
 
 - All generated images are saved into the `./outputs/` directory.
 
+- Find some nice example prompts here:
+  - https://lexica.art/
 
 ## Model Sources
 
