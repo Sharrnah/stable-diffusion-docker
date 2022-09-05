@@ -1,4 +1,4 @@
-# Docker image for Stable Diffusion
+# Docker for Stable Diffusion
 
 ## Setup for Windows
 
@@ -99,37 +99,12 @@ RUN_MODE=GTX16
 
 ### Stable Diffusion Model Download
 
-- Download the v1.4 Stable Diffusion model from one of the following sources:
-  - Web:
-    
-    - https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl
-    
-    or
-
-    - https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
-  - Torrent Magnet:
-    
-    - > `magnet:?xt=urn:btih:3a4a612d75ed088ea542acac52f9f45987488d1c&dn=sd-v1-4.ckpt&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337`
-  - Hugging face:
-    
-    - https://huggingface.co/CompVis/stable-diffusion-v1-4
-
-- Place the downloaded model file into the `models/` directory and name it `SDv1.4.ckpt` (**Case-Sensitive**)
-
-### GFPGAN Model Download (Face Correction)
-- Download the GFPGAN v1.3.0 model from here:
-  - https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
-
-- Place the downloaded model file into the `models/` directory and name it `GFPGANv1.3.pth` (**Case-Sensitive**)
-
-### RealESRGAN Model Download (Upscaling)
-- Download the RealESRGAN x4plus model from here:
-  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-- Download the RealESRGAN x4plus anime model from here:
-  - https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
-
-- Place the downloaded model files into the `models/` directory and name them `RealESRGAN_x4plus.pth` and `RealESRGAN_x4plus_anime_6B.pth` (**Case-Sensitive**)
-
+| Model            | Function         | Version  | Size   | Local Location (*Case-Sensitive!*)    | Download Source                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|------------------|------------------|----------|--------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Stable Diffusion | Image Generation | v1.4     | ~4&nbsp;GB  | models/SDv1.4.ckpt                    | Web:<br>https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl<br>https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media<br>Torrent Magnet:<br>`magnet:?xt=urn:btih:3a4a612d75ed088ea542acac52f9f45987488d1c&dn=sd-v1-4.ckpt&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337`<br>Hugging Face:<br>https://huggingface.co/CompVis/stable-diffusion-v1-4 |
+| GFPGAN           | Face Correction  | v1.3.0   | 332&nbsp;MB | models/GFPGANv1.3.pth                 | Web:<br>https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth                                                                                                                                                                                                                                                                                                                                                             |
+| RealESRGAN       | Upscaling        | v0.1.0   | ~64&nbsp;MB | models/RealESRGAN_x4plus.pth          | Web:<br>https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth                                                                                                                                                                                                                                                                                                                                                    |
+| RealESRGAN anime | Upscaling Anime  | v0.2.2.4 | ~17&nbsp;MB | models/RealESRGAN_x4plus_anime_6B.pth | Web:<br>https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth                                                                                                                                                                                                                                                                                                                                         |
 
 ### _Sources:_
 - https://rentry.org/GUItard
