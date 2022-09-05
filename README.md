@@ -102,8 +102,6 @@ RUN_MODE=GTX16
 
 > **Models should be downloaded automatically on first run now!**
 
-### Stable Diffusion Model Download
-
 | Model            | Function         | Version  | Size   | Local Location (*Case-Sensitive!*)    | Download Source                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |------------------|------------------|----------|--------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Stable Diffusion | Image Generation | v1.4      | ~4&nbsp;GB  | models/SDv1.4.ckpt                    | Web:<br>https://drive.yerf.org/wl/?id=EBfTrmcCCUAGaQBXVIj5lJmEhjoP1tgl<br>https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media<br>Torrent Magnet:<br>`magnet:?xt=urn:btih:3a4a612d75ed088ea542acac52f9f45987488d1c&dn=sd-v1-4.ckpt&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337`<br>Hugging Face:<br>https://huggingface.co/CompVis/stable-diffusion-v1-4 |
