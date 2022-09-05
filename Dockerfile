@@ -43,6 +43,9 @@ RUN ln -s /models/GFPGANv1.3.pth /app/src/gfpgan/experiments/pretrained_models/G
 RUN ln -s /models/RealESRGAN_x4plus.pth /app/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth
 RUN ln -s /models/RealESRGAN_x4plus_anime_6B.pth /app/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus_anime_6B.pth
 
+RUN echo "Adding Textual Inversion" && git clone https://github.com/hlky/sd-enable-textual-inversion /tmp/sd-enable-textual-inversion && \
+	cp -ax /tmp/sd-enable-textual-inversion/* /app/ && rm -rf /tmp/sd-enable-textual-inversion
+
 EXPOSE 7860
 
 COPY entrypoint.sh /app/
