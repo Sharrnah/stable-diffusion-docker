@@ -24,6 +24,11 @@ localhostForwarding=true
     
     Needs kernel version of 5.10.43.3 or higher.
 
+    Run
+    > `wsl --update`
+    
+    to update the kernel.
+
 ## Installation
 
 ### With Docker
