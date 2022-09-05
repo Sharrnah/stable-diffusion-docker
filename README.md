@@ -113,3 +113,4 @@ RUN_MODE=GTX16
 ### _Sources:_
 - https://rentry.org/GUItard
 - https://github.com/hlky/stable-diffusion
+- https://github.com/devilismyfriend/latent-diffusion
