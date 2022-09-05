@@ -46,6 +46,12 @@ RUN ln -s /models/RealESRGAN_x4plus_anime_6B.pth /app/src/realesrgan/experiments
 RUN echo "Adding Textual Inversion" && git clone https://github.com/hlky/sd-enable-textual-inversion /tmp/sd-enable-textual-inversion && \
 	cp -ax /tmp/sd-enable-textual-inversion/* /app/ && rm -rf /tmp/sd-enable-textual-inversion
 
+# Add latent-diffusion
+RUN echo "Adding Latent-Diffusion" && git clone https://github.com/devilismyfriend/latent-diffusion.git /app/src/latent-diffusion && \
+    mkdir -p /app/src/latent-diffusion/experiments/pretrained_models/ && \
+    wget -O /app/src/latent-diffusion/experiments/pretrained_models/project.yaml -q --show-progress --progress=bar:force https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1 && \
+    ln -s /models/LDSR.ckpt /app/src/latent-diffusion/experiments/pretrained_models/model.ckpt
+
 EXPOSE 7860
 
 COPY entrypoint.sh /app/
