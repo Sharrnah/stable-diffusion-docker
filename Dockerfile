@@ -26,13 +26,14 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends socat && apt
 
 WORKDIR /app
 
-RUN echo "Cloning Project" && git clone https://github.com/hlky/stable-diffusion/ .
+RUN echo "Cloning Project" && git clone https://github.com/sd-webui/stable-diffusion-webui.git .
 
+# link stable diffusion model v1.4
 RUN mkdir -p ./models/ldm/stable-diffusion-v1/
-
 RUN ln -s /models/SDv1.4.ckpt /app/models/ldm/stable-diffusion-v1/model.ckpt
 
-RUN echo "Downloading Font for image matrix" && mkdir -p /usr/share/fonts/truetype/ && wget -O /usr/share/fonts/truetype/DejaVuSans.ttf https://github.com/hlky/stable-diffusion/raw/main/data/DejaVuSans.ttf
+# Install font for prompt matrix
+RUN mkdir -p /usr/share/fonts/truetype/ && cp ./data/DejaVuSans.ttf /usr/share/fonts/truetype/
 
 RUN echo "Creating python environment" && conda env create -f environment.yaml
 
@@ -43,11 +44,8 @@ RUN ln -s /models/GFPGANv1.3.pth /app/src/gfpgan/experiments/pretrained_models/G
 RUN ln -s /models/RealESRGAN_x4plus.pth /app/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth
 RUN ln -s /models/RealESRGAN_x4plus_anime_6B.pth /app/src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus_anime_6B.pth
 
-RUN echo "Adding Textual Inversion" && git clone https://github.com/hlky/sd-enable-textual-inversion /tmp/sd-enable-textual-inversion && \
-	cp -ax /tmp/sd-enable-textual-inversion/* /app/ && rm -rf /tmp/sd-enable-textual-inversion
-
 # Add latent-diffusion
-RUN echo "Adding Latent-Diffusion" && git clone https://github.com/devilismyfriend/latent-diffusion.git /app/src/latent-diffusion && \
+RUN echo "Adding Latent-Diffusion" && git clone https://github.com/Hafiidz/latent-diffusion.git /app/src/latent-diffusion && \
     mkdir -p /app/src/latent-diffusion/experiments/pretrained_models/ && \
     wget -O /app/src/latent-diffusion/experiments/pretrained_models/project.yaml -q --show-progress --progress=bar:force https://heibox.uni-heidelberg.de/f/31a76b13ea27482981b4/?dl=1 && \
     ln -s /models/LDSR.ckpt /app/src/latent-diffusion/experiments/pretrained_models/model.ckpt

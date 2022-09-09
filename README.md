@@ -37,7 +37,7 @@ localhostForwarding=true
 
 - Run prebuild image with:
   ```console
-  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/app/src/facexlib/facexlib/weights/ -v ./models/:/models/ -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
+  docker run -d --gpus all -p 7860:8080 -v ./.cache/app:/root/.cache -v ./.cache/facexlib/:/app/src/facexlib/facexlib/weights/ -v ./.cache/gfpgan/:/app/gfpgan/weights/ -v ./models/:/models/ -v ./outputs/:/outputs/ -e RUN_MODE=false sharrnah/stable-diffusion-guitard
   ```
   _(replace "`sharrnah/stable-diffusion-guitard`" image name with "`stable-diffusion-guitard`" to run self-build image)_
 
@@ -71,6 +71,9 @@ localhostForwarding=true
 - Set the environment variable "WEBUI_RELAUNCH" to
   - "`true`" (default) For automatic restarting of the WebUI
   - "`false`" Disables automatic restarting of the WebUI
+- Set the environment variable "ENABLE_TEXTUAL_INVERSION" to
+  - "`true`" To clone and install Textual Inversion (Breaks Latent Diffusion SR!!!)
+  - "`false`" (default) does not clone Textual Inversion on startup
 
 For that you can create a `.env` file and set the content to
 ```env
@@ -112,5 +115,5 @@ RUN_MODE=GTX16
 
 ### _Sources:_
 - https://rentry.org/GUItard
-- https://github.com/hlky/stable-diffusion
-- https://github.com/devilismyfriend/latent-diffusion
+- https://github.com/sd-webui/stable-diffusion-webui
+- https://github.com/Hafiidz/latent-diffusion

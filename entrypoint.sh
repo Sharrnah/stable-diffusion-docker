@@ -5,6 +5,7 @@ MODEL_FILES=(
     'GFPGANv1.3.pth https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth c953a88f2727c85c3d9ae72e2bd4846bbaf59fe6972ad94130e23e7017524a70'
     'RealESRGAN_x4plus.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth 4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1'
     'RealESRGAN_x4plus_anime_6B.pth https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth f872d837d3c90ed2e05227bed711af5671a6fd1c9f7d7e91c911a61f155e99da'
+    'LDSR.ckpt https://heibox.uni-heidelberg.de/f/578df07c8fc04ffbadf3/?dl=1 c209caecac2f97b4bb8f4d726b70ac2ac9b35904b7fc99801e1f5e61f9210c13'
 )
 
 validateDownloadModel() {
@@ -32,6 +33,14 @@ for models in "${MODEL_FILES[@]}"; do
 done
 
 socat TCP4-LISTEN:8080,fork TCP4:127.0.0.1:7860 &
+
+
+# Enable textual inversion (because it is not compatible with Latent diffusion currently, its set for opt-in)
+if [ "${ENABLE_TEXTUAL_INVERSION}" = "true" ] ; then
+  echo "Cloning and installing Textual Inversion (breaks Latent Diffusion Super Resolution!!!)"
+  git clone https://github.com/hlky/sd-enable-textual-inversion /tmp/sd-enable-textual-inversion
+  cp -ax /tmp/sd-enable-textual-inversion/* /app/ && rm -rf /tmp/sd-enable-textual-inversion
+fi
 
 RUN_ARGS=""
 

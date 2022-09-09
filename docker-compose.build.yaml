@@ -9,6 +9,7 @@ services:
     environment:
       - RUN_MODE
       - WEBUI_RELAUNCH=true
+      - ENABLE_TEXTUAL_INVERSION
     ports:
       - 7860:8080
     stdin_open: true
@@ -22,7 +23,8 @@ services:
     volumes:
       # mount cache dirs
       - ./.cache/app:/root/.cache
-      - ./.cache/facexlib/:/opt/conda/envs/ldm/lib/python3.8/site-packages/facexlib/weights/
+      - ./.cache/facexlib/:/app/src/facexlib/facexlib/weights/
+      - ./.cache/gfpgan/:/app/gfpgan/weights/
       # mounting model files
       - ./models/:/models/
       # generated outputs mount
